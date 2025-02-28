@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
+.headerTag{
+    display: flex;
+    justify-content: space-between;
+}
+.Logo{
+    padding-left: 20px;
+}
+.Logo img{
+    width: 4rem;
+}
+.Logo span{
+    font-family: 'Poetsen One', sans-serif;
+    font-size: 2rem;
+}
+.S ,.P{
+    color: black;
+}
+.kill , .ars{
+    color: #f6d33c;
+}
+
+.Navigations ul{
+    padding: 10px 0px;
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    color: black;
+}
+
+.search-login {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 20px;
+  }
+  
+  .search-bar {
+    width: 15rem;
+    padding: 10px;
+    border: 1px solid #f6d33c;
+    border-radius: 5px;
+    outline: none;
+    margin: 0px;
+  }
+  
+  .login-btn {
+    background-color: #f6d33c;
+    color: black;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .login-btn:hover {
+    background-color: rgb(7, 7, 7);
+    color: #f6d33c;
+  }
+
+  /* ------------------------------------- */
+  .section1 img{
+    width: 100%;
+  }
