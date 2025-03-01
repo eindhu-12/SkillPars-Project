@@ -13,7 +13,7 @@
     font-family: 'Poetsen One', sans-serif;
     font-size: 2rem;
 }
-.S ,.P{
+.S , .P{
     color: black;
 }
 .kill , .ars{
@@ -62,3 +62,52 @@
   .section1 img{
     width: 100%;
   }
+
+  /* --------------------Footer------------------------- */
+
+.FotterHome{
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 10rem;
+  background-color: black;
+  
+}
+.FooterLogo{
+  display: flex ;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 600;
+  text-align: center;
+} 
+.logoContainer{
+  font-family: 'Poetsen One', sans-serif;
+}
+.FooterLogo .logoContainer .SF,.PF{
+  color: white;
+}
+.FooterLogo .quote{
+  color: white;
+  font-size: 1rem;
+}
+.Company div , .Teacher div ,.socialmedia div{
+  color: #f6d33c;
+  font-size: 1.1rem;
+}
+.Company{
+  color: white;
+}
+.socialmedia{
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+.socialmedia span{
+  padding: 5px;
+}
+.socialmedia span i{
+  padding-right: 0.8rem;
+}
+.Teacher{
+  color: white;
+}
