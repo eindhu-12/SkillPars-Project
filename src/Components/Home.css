@@ -63,6 +63,135 @@
     width: 100%;
   }
 
+/* ----------------------------------- */
+/* Apply flex to the entire section */
+.CoursesSec {
+  display: flex;
+  flex-direction: row; /* Side by side layout */
+  gap: 20px;
+  padding: 20px;
+  align-items: stretch;
+}
+
+/* Course1 should take 40% width */
+.Course1 {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  width: 40%;
+}
+
+/* Style for the card inside Course1 */
+.card1 {
+  background-color: #f6d33c;
+  color: black;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  width: 100%;
+  height: 13rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* CourseCards should take remaining 60% */
+.CourseCards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  width: 60%;
+}
+
+/* Each card in CourseCards */
+.card2, .card3, .card4 {
+  background-color: white;
+  color: black;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  width: 44%; /* 2 cards per row */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Ensure images are well-sized */
+.card2 img, .card3 img, .card4 img {
+  width: 18rem;
+  height: 10rem;
+  object-fit: contain;
+}
+
+/* Buttons */
+button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border: none;
+  background-color: black;
+  color: #f6d33c;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.card1 button:hover{
+  background-color: black;
+  color: white;
+}
+button:hover {
+  background-color: #f6d33c;
+  color: black;
+}
+/* ----------------------section-3--------- */
+.Heading{
+  margin: 0 2rem;
+  margin-top: 4rem;
+  color: black;
+  font-size: 2rem;
+
+}
+.Heading:hover{
+  text-decoration: underline;
+}
+.AboutSection {
+  display: flex;
+  background-color: black;
+  color: white;
+  align-items: center;
+  margin: 1rem 1rem;
+
+}
+
+.AboutApp {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 70%;
+  margin-left: 3rem;
+}
+.text-box h2{
+  color: #f6d33c;
+}
+
+
+.description {
+  font-size: 16px;
+  width: 70%;
+}
+.AboutApp button{
+  background-color: #f6d33c;
+  color: black;
+  width: 10rem;
+}
+.AboutApp button:hover{
+  background-color: white;
+}
+.studyImage {
+  width: 30%;
+}
+
+.studyImage img {
+  width: 100%;
+  height: 100%;
+  object-fit:fill;
+}
+
   /* --------------------Footer------------------------- */
 
 .FotterHome{
@@ -86,6 +215,15 @@
 .FooterLogo .logoContainer .SF,.PF{
   color: white;
 }
+.logoContainer:hover .SF,
+.logoContainer:hover .PF {
+    color: #f6d33c; 
+}
+
+.logoContainer:hover .kill,
+.logoContainer:hover .ars {
+    color: white;  
+}
 .FooterLogo .quote{
   color: white;
   font-size: 1rem;
@@ -94,6 +232,7 @@
   color: #f6d33c;
   font-size: 1.1rem;
 }
+
 .Company{
   color: white;
 }
@@ -107,6 +246,15 @@
 }
 .socialmedia span i{
   padding-right: 0.8rem;
+}
+.Company:hover div ,.socialmedia:hover div ,.Teacher:hover div{
+  color: white;
+}
+.Company p:hover , .socialmedia span:hover , .Teacher p:hover{
+  color: #f6d33c;
+}
+.Company div:hover , .socialmedia div:hover , .Teacher div:hover{
+  color: #f6d33c;
 }
 .Teacher{
   color: white;
