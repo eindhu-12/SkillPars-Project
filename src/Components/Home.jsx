@@ -42,11 +42,13 @@ const Home = () => {
         </div>
 
     </header>
+{/* ------------------------section1-------------------------- */}
 
     <section className='section1'>
       <img src={Pic1} alt="img" />
     </section>
-    
+{/* ------------------------section2 Courses-------------------------- */}
+
     <h2 className='Courses Heading'>Courses</h2>
     <section className="CoursesSec">
       <div className="Course1">
@@ -79,6 +81,7 @@ const Home = () => {
         </div>
       </div>
     </section>
+{/* ------------------------section3  About-------------------------- */}
 
     <h2 className='About-1 Heading'>About</h2>
     <section className='AboutSection'>
@@ -102,7 +105,7 @@ const Home = () => {
     </section>
 
   
-
+{/* ------------------------Footer-------------------------- */}
       <footer className='FotterHome'>
 
       <div className='FooterLogo'>
