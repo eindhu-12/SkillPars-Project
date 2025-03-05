@@ -10,8 +10,10 @@ import WenDesignImg from "../Pictures/WebDesign.png";
 import MernImg from "../Pictures/MernStack.png"; 
 // import StudyPic from "../Pictures/StudyGirlPic.png"; 
 import StudyPic from "../Pictures/GirlWithBook.png"; 
-
-
+import teacher1 from "../Pictures/teacher1.png"
+import teacher2 from "../Pictures/teacher2.png"
+import teacher3 from "../Pictures/teacher3.png"
+import teacher4 from "../Pictures/teacher4.png"
 
 
 const Home = () => {
@@ -99,8 +101,45 @@ const Home = () => {
     <div className='studyImage'>
       <img src={StudyPic} alt="Pic" />
     </div>
+    </section>
+{/* ------------------------section3  About-------------------------- */}
     
+    <div className="expertTitle">
+      <h2>Learn from Creative Experts</h2>
+      <p>SkillPars offers expert-led classes where industry leaders share their best practices, techniques, and real-world experiences to help you succeed</p>
+    </div>
+    <section className="experts">
+      <div className="expert one">
+      <img src={teacher1} alt="expert1" />
+      <div>
+        <h3>Kian </h3>
+        <h5>Python Developer</h5>
+      </div>
+      </div>
 
+      <div className="expert two">
+      <img src={teacher2} alt="expert2" />
+      <div>
+        <h3>Elina</h3>
+        <h5>Web Designer</h5>
+      </div>
+      </div>
+
+      <div className="expert three">
+      <img src={teacher3} alt="expert3" />
+      <div>
+        <h3>Sianna</h3>
+        <h5>Java Developer</h5>
+      </div>
+      </div>
+
+      <div className="expert four">
+      <img src={teacher4} alt="expert4" />
+      <div>
+        <h3>Aryan </h3>
+        <h5>Frontend Developer</h5>
+      </div>
+      </div>
 
     </section>
 

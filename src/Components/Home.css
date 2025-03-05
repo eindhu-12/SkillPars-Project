@@ -64,16 +64,23 @@
   }
 
 /* ----------------------------------- */
-/* Apply flex to the entire section */
+.Heading{
+  margin: 0 2rem;
+  margin-top: 4rem;
+  color: black;
+  font-size: 2rem;
+  color: #f6d33c;
+  text-align: center;
+
+}
 .CoursesSec {
   display: flex;
-  flex-direction: row; /* Side by side layout */
+  flex-direction: row; 
   gap: 20px;
   padding: 20px;
   align-items: stretch;
 }
 
-/* Course1 should take 40% width */
 .Course1 {
   display: flex;
   justify-content: center;
@@ -81,7 +88,6 @@
   width: 40%;
 }
 
-/* Style for the card inside Course1 */
 .card1 {
   background-color: #f6d33c;
   color: black;
@@ -93,7 +99,6 @@
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* CourseCards should take remaining 60% */
 .CourseCards {
   display: flex;
   flex-wrap: wrap;
@@ -102,18 +107,16 @@
   width: 60%;
 }
 
-/* Each card in CourseCards */
 .card2, .card3, .card4 {
   background-color: white;
   color: black;
   padding: 20px;
   text-align: center;
   border-radius: 10px;
-  width: 44%; /* 2 cards per row */
+  width: 44%;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Ensure images are well-sized */
 .card2 img, .card3 img, .card4 img {
   width: 18rem;
   height: 10rem;
@@ -139,13 +142,6 @@ button:hover {
   color: black;
 }
 /* ----------------------section-3--------- */
-.Heading{
-  margin: 0 2rem;
-  margin-top: 4rem;
-  color: black;
-  font-size: 2rem;
-
-}
 .Heading:hover{
   text-decoration: underline;
 }
@@ -191,7 +187,65 @@ button:hover {
   height: 100%;
   object-fit:fill;
 }
-
+  /* --------------------expert section------------------------- */
+  .expertTitle{
+    text-align: center;
+  }
+  .expertTitle h2{
+    color: #f6d33c;
+    font-size: 3rem;
+  }
+  .expertTitle p{
+    color: black;
+    font-size: 1.2rem;
+  }
+  .experts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .expert {
+    position: relative;
+    width: 45%; 
+    max-width: 300px;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  
+  .expert img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 10px;
+  }
+  
+  .expert div {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Dark overlay */
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 0 0 10px 10px;
+  }
+  
+  .expert h3 {
+    margin: 5px 0;
+    font-size: 18px;
+  }
+  
+  .expert h5 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+  }
+ 
+  
   /* --------------------Footer------------------------- */
 
 .FotterHome{
