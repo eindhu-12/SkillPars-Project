@@ -48,6 +48,7 @@ const Home = () => {
 
     <section className='section1'>
       <img src={Pic1} alt="img" />
+      <h1>An investment in knowledge pays the best interest</h1>
     </section>
 {/* ------------------------section2 Courses-------------------------- */}
 
