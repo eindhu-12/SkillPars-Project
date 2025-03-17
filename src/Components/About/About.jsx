@@ -27,11 +27,17 @@ const About = () => {
                         <li>Services</li>
                     </ul>
                 </div>
-                <div className='space'>
-                    
+                <div className='search-login'>
+                    <input type="search" placeholder="Search..." className="search-bar" />
                 </div>
-
             </header>
+            <section className="sec-1">
+                <div className="about1Content">
+                    <img src="../../../public/Images/AboutImg1.jpg" alt="" />
+                    <h1>Discover, learn, excel, inspire, achieve</h1>
+                </div>
+            </section>
+
         </>
     )
 }
