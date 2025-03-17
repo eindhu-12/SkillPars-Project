@@ -32,7 +32,7 @@ const Home = () => {
         <div className='Navigations'>
           <ul>
             <li>Home</li>
-            <li>About</li>
+            <li><Link to="/about">About</Link></li>
             <li>Courses</li>
             <li>Services</li>
           </ul>
@@ -44,7 +44,9 @@ const Home = () => {
         </div>
 
       </header>
-      {/* ------------------------section1-------------------------- */}
+      {
+      
+/* ------------------------section1-------------------------- */}
 
       <section className='section1'>
         <img src={Pic1} alt="img" />

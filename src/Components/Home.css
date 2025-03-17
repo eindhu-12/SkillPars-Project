@@ -20,6 +20,14 @@
     color: #f6d33c;
 }
 
+.Navigations ul li a {
+  color: black;
+  text-decoration: none;
+  font-weight: 400;
+}
+.Navigations ul li a:hover{
+  color: #f6d33c;
+}
 .Navigations ul{
     padding: 10px 0px;
     display: flex;
