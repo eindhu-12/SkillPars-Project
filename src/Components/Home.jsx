@@ -2,13 +2,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import "./Home.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import Logo from '../Pictures/SkillParsLogo.png';
-import Pic1 from "../Pictures/Pic1.jpg"
 import PythonImg from "../Pictures/Python.png";
 import JavaImg from "../Pictures/Java.png";
 import WenDesignImg from "../Pictures/WebDesign.png";
 import MernImg from "../Pictures/MernStack.png";
-// import StudyPic from "../Pictures/StudyGirlPic.png"; 
 import StudyPic from "../Pictures/GirlWithBook.png";
 import teacher1 from "../Pictures/teacher1.png"
 import teacher2 from "../Pictures/teacher2.png"
@@ -22,7 +19,7 @@ const Home = () => {
       <header className='headerTag'>
 
         <div className='Logo'>
-          <img src={Logo} alt="Logo" />
+          <img src="../../public/Images/SkillParsLogo.png" alt="Logo" />
           <span className='S'>S</span>
           <span className='kill'>kill</span>
           <span className='P'>P</span>
@@ -33,8 +30,8 @@ const Home = () => {
           <ul>
             <li>Home</li>
             <li><Link to="/about">About</Link></li>
+            <li>Courses Demo</li>
             <li>Courses</li>
-            <li>Services</li>
           </ul>
         </div>
 
@@ -49,17 +46,19 @@ const Home = () => {
 /* ------------------------section1-------------------------- */}
 
       <section className='section1'>
-        <img src={Pic1} alt="img" />
+        <img className='Pic-1Home' src="/Images/Pic1.jpg" alt="img" />
         <div className="contentAboutSKillPars">
           <h1>Upgrade Your Skills with SkillPars!</h1>
           <h3>An investment in knowledge pays the best interest</h3>
           <p>SkillPars offers high-quality courses in technical fields, helping you master in-demand skills through interactive online classes and expert guidance.</p>
-          <button>Book a Demo</button>
+          {/* <button>Book a Demo</button> */}
+          <a href="#demo">Book a Demo</a>
+
         </div>
       </section>
       {/* ------------------------section2 Courses-------------------------- */}
 
-      <h2 className='Courses Heading'>Courses</h2>
+      <h2 className='Courses Heading' id='demo'>Courses</h2>
       <section className="CoursesSec">
         <div className="Course1">
           <div className="card1">
