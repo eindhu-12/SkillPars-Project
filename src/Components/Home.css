@@ -155,12 +155,15 @@
   color: black;
   padding: 20px;
   text-align: center;
-  border-radius: 10px;
+  border-radius: 1rem;
   width: 100%;
   height: 13rem;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
-
+.card1 button:hover{
+  background-color: black;
+  color: white;
+}
 .CourseCards {
   display: flex;
   flex-wrap: wrap;
@@ -185,8 +188,9 @@
   object-fit: contain;
 }
 
-/* Buttons */
-button {
+.CourseCards button {
+  text-decoration: none;
+  
   margin-top: 10px;
   padding: 10px 15px;
   border: none;
@@ -195,14 +199,20 @@ button {
   cursor: pointer;
   border-radius: 5px;
 }
-.card1 button:hover{
-  background-color: black;
+
+.CourseCards button a{
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
   color: white;
+  object-fit: cover;
 }
-button:hover {
+
+button:hover,.CourseCards a:hover {
   background-color: #f6d33c;
   color: black;
 }
+
 /* ----------------------section-3--------- */
 .Heading:hover{
   text-decoration: underline;

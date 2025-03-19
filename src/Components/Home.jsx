@@ -1,10 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import "./Home.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import PythonImg from "../Pictures/Python.png";
 import JavaImg from "../Pictures/Java.png";
-import WenDesignImg from "../Pictures/WebDesign.png";
+import WebDesignImg from "../Pictures/WebDesign.png";
 import MernImg from "../Pictures/MernStack.png";
 import StudyPic from "../Pictures/GirlWithBook.png";
 import teacher1 from "../Pictures/teacher1.png"
@@ -12,7 +12,7 @@ import teacher2 from "../Pictures/teacher2.png"
 import teacher3 from "../Pictures/teacher3.png"
 import teacher4 from "../Pictures/teacher4.png"
 
-
+import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <>
@@ -28,9 +28,9 @@ const Home = () => {
 
         <div className='Navigations'>
           <ul>
-            <li>Home</li>
+            <li><Link to="/" >Home</Link></li>
             <li><Link to="/about">About</Link></li>
-            <li>Courses Demo</li>
+            <li><a href="#demo" >Courses Demo</a></li>
             <li>Courses</li>
           </ul>
         </div>
@@ -41,9 +41,7 @@ const Home = () => {
         </div>
 
       </header>
-      {
-      
-/* ------------------------section1-------------------------- */}
+      {/* ------------------------section1-------------------------- */}
 
       <section className='section1'>
         <img className='Pic-1Home' src="/Images/Pic1.jpg" alt="img" />
@@ -58,38 +56,47 @@ const Home = () => {
       </section>
       {/* ------------------------section2 Courses-------------------------- */}
 
-      <h2 className='Courses Heading' id='demo'>Courses</h2>
+      <h2 className="Courses Heading" id="demo">Courses</h2>
       <section className="CoursesSec">
         <div className="Course1">
           <div className="card1">
             <h2>What Do I Teach?</h2>
-            <p>We provide hands-on training in trending technical skills, including web development, Python, Java AI, blockchain, and more, ensuring career growth.</p>
+            <p>We provide hands-on training in trending technical skills, including web development, Python, Java, AI, blockchain, and more, ensuring career growth.</p>
             <button>Show More</button>
           </div>
         </div>
         <div className="CourseCards">
-          <div className='card2'>
+          <div className="card2">
             <img src={PythonImg} alt="PythonImg" />
             <h4>Python Programming</h4>
-            <button>Book a Demo</button>
+            <button>
+              <Link to="/demo?course=Python Programming">Book a Demo</Link>
+            </button>
           </div>
           <div className="card2">
             <img src={JavaImg} alt="JavaImg" />
             <h4>Java Programming</h4>
-            <button>Book a Demo</button>
+            <button>
+              <Link to="/demo?course=Java Programming">Book a Demo</Link>
+            </button>
           </div>
           <div className="card3">
-            <img src={WenDesignImg} alt="WebDesignImg" />
-            <h4>WenDesign</h4>
-            <button>Book a Demo</button>
+            <img src={WebDesignImg} alt="WebDesignImg" />
+            <h4>Web Design</h4>
+            <button>
+              <Link to="/demo?course=Web Design">Book a Demo</Link>
+            </button>
           </div>
           <div className="card4">
             <img src={MernImg} alt="MERNImg" />
-            <h4>Mern Stack</h4>
-            <button>Book a Demo</button>
+            <h4>MERN Stack</h4>
+            <button>
+              <Link to="/demo?course=MERN Stack">Book a Demo</Link>
+            </button>
           </div>
         </div>
       </section>
+
       {/* ------------------------section3  About-------------------------- */}
 
       <h2 className='About-1 Heading'>About</h2>

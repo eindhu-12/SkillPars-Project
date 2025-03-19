@@ -25,8 +25,8 @@ const About = () => {
                     <ul>
                         <li><Link to="/">Home</Link></li>
                         <li><Link to="/about">About</Link></li>
+                        <li><Link to="/">Courses Demo</Link></li>
                         <li>Courses</li>
-                        <li>Services</li>
                     </ul>
                 </div>
                 <div className='search-login'>
