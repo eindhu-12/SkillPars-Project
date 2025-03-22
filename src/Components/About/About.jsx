@@ -14,7 +14,7 @@ const About = () => {
             <header className='headerTag'>
 
                 <div className='Logo'>
-                    <img src="../../../public/Images/SkillParsLogo.png" alt="Logo" />
+                    <img src="/Images/SkillParsLogo.png" alt="Logo" />
                     <span className='S'>S</span>
                     <span className='kill'>kill</span>
                     <span className='P'>P</span>
