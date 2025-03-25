@@ -31,7 +31,8 @@ const Home = () => {
             <li><Link to="/" >Home</Link></li>
             <li><Link to="/about">About</Link></li>
             <li><a href="#demo" >Courses Demo</a></li>
-            <li>Courses</li>
+            <li><Link to="/courses">Courses</Link></li>
+            <li><Link to="/profile">Profile</Link></li>
           </ul>
         </div>
 
@@ -190,6 +191,7 @@ const Home = () => {
           <div>Teacher</div>
           <p>Become a Teacher</p>
           <p>Rules & Regulations</p>
+          <p><Link to="/teacher_registration">Teacher Registration</Link></p>
         </div>
 
       </footer>

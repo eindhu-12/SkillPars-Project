@@ -1,129 +1,118 @@
-import "dotenv/config";
-import express from "express";
-import mysql from "mysql2";
-import cors from "cors";
-import bodyParser from "body-parser";
-import nodemailer from "nodemailer";
-import axios from "axios";
-import jwt from "jsonwebtoken";
+import express from 'express';
+import mysql from 'mysql2';
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+import cors from 'cors';
+
+dotenv.config();
 
 const app = express();
+app.use(express.json());
 app.use(cors());
-app.use(bodyParser.json());
 
-// MySQL Database Connection
+// MySQL Connection
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  port: process.env.DB_PORT, // Should be 3307 based on your .env file
+  port: process.env.DB_PORT
 });
 
 db.connect((err) => {
   if (err) {
-    console.error("❌ Database connection failed:", err);
-  } else {
-    console.log("✅ Connected to MySQL database");
+    console.error('Database connection failed:', err);
+    return;
+  }
+  console.log('Connected to MySQL database');
+});
+
+// Create demo table if it doesn't exist
+db.query(`
+  CREATE TABLE IF NOT EXISTS demo (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    course VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    passed_out_year INT NOT NULL,
+    state VARCHAR(255) NOT NULL,
+    qualification VARCHAR(255),
+    gender VARCHAR(50),
+    country VARCHAR(255),
+    city VARCHAR(255),
+    UNIQUE(email, course)
+  )
+`, (err) => {
+  if (err) console.error('Error creating table:', err);
+});
+
+// Course links
+const courseLinks = {
+  "Python Programming": "https://us05web.zoom.us/j/84431906620?pwd=yuvuIh8uZfUeuX0BYUMmQRx9cHbiab.1",
+  "Java Programming": "https://us05web.zoom.us/j/86125029201?pwd=KJPpgxUsrj0IWBylfOsz7O7iO0bn0v.1",
+  "Web Design": "https://us05web.zoom.us/j/86125029201?pwd=KJPpgxUsrj0IWBylfOsz7O7iO0bn0v.1",
+  "MERN Stack": "https://us05web.zoom.us/j/85142597860?pwd=XzWjJKeekYCtiAbZaokbwLKFhhqZkr.1"
+};
+
+// Nodemailer transporter setup
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.SENDER_EMAIL,
+    pass: process.env.EMAIL_PASSWORD
   }
 });
 
-// Function to generate a JWT token for Zoom API
-const generateZoomJWT = () => {
-  const payload = {
-    iss: process.env.ZOOM_API_KEY,
-    exp: Math.floor(Date.now() / 1000) + 60 * 5, // Token valid for 5 minutes
-  };
-  return jwt.sign(payload, process.env.ZOOM_API_SECRET);
-};
+// Registration endpoint
+app.post('/register', async (req, res) => {
+  const {
+    name, email, course, phone, graduationYear, state,
+    qualification, gender, country, city
+  } = req.body;
 
-// Function to generate Zoom meeting link using the JWT token
-const createZoomMeeting = async () => {
   try {
-    const token = generateZoomJWT();
-    const response = await axios.post(
-      "https://api.zoom.us/v2/users/me/meetings",
-      {
-        topic: "SkillPars Demo Session",
-        type: 2, // Scheduled meeting
-        start_time: new Date().toISOString().split("T")[0] + "T15:00:00Z", // 3 PM UTC
-        duration: 60,
-        timezone: "Asia/Kolkata",
-        settings: {
-          host_video: true,
-          participant_video: true,
-        },
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
+    // Check if email and course combination exists
+    const [existing] = await db.promise().query(
+      'SELECT * FROM demo WHERE email = ? AND course = ?',
+      [email, course]
     );
-    return response.data.join_url;
-  } catch (error) {
-    console.error(
-      "❌ Error creating Zoom meeting:",
-      error.response ? error.response.data : error.message
-    );
-    return null;
-  }
-};
-
-// Route to handle demo registration
-app.post("/register", async (req, res) => {
-  const { name, email, phone, course } = req.body;
-  const zoomLink = await createZoomMeeting();
-
-  if (!zoomLink) {
-    return res.status(500).json({ message: "Failed to create Zoom meeting" });
-  }
-
-  // Insert demo registration into MySQL
-  const sql = "INSERT INTO Demo (name, email, phone, course) VALUES (?, ?, ?, ?)";
-  db.query(sql, [name, email, phone, course], (err, result) => {
-    if (err) {
-      console.error("❌ Database insert failed:", err);
-      return res.status(500).json({ message: "Database error" });
-    }
-    console.log("✅ Demo registration stored in database");
-
-    // Send email with Zoom link
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.SENDER_EMAIL,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
 
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: email,
-      subject: "SkillPars Demo Session Confirmation",
-      html: `
-        <h2>Hello ${name},</h2>
-        <p>Thank you for registering for the SkillPars demo session for <strong>${course}</strong>.</p>
-        <p>Your session is scheduled for <strong>3:00 PM - 4:00 PM IST today.</strong></p>
-        <p>Click the link below to join the session:</p>
-        <a href="${zoomLink}" target="_blank">${zoomLink}</a>
-        <p>Looking forward to seeing you!</p>
-        <p>Best Regards,</p>
-        <p>SkillPars Team</p>
-      `,
+      subject: `Demo Session Link for ${course}`,
+      text: `Hello ${name},\n\nThank you for registering for the ${course} demo session. Here is your Zoom link:\n\n${courseLinks[course]}\n\nBest regards,\nSkillPars Team`
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error("❌ Email sending failed:", error);
-        return res.status(500).json({ message: "Email sending failed" });
-      }
-      console.log("✅ Email sent:", info.response);
-      res.status(200).json({ message: "Demo registration successful!" });
-    });
-  });
+    if (existing.length > 0) {
+      // If email and course exist, resend the link
+      await transporter.sendMail(mailOptions);
+      return res.json({ message: 'Demo link resent to your email!' });
+    }
+
+    // Insert new record if email-course combo doesn't exist
+    await db.promise().query(
+      'INSERT INTO demo (name, email, course, phone, passed_out_year, state, qualification, gender, country, city) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [name, email, course, phone, graduationYear, state, qualification, gender, country, city]
+    );
+
+    // Send email with course link
+    await transporter.sendMail(mailOptions);
+    res.json({ message: 'Registration successful! Demo link sent to your email.' });
+
+  } catch (error) {
+    console.error('Error in registration:', error);
+    if (error.code === 'ER_DUP_ENTRY') {
+      res.status(400).json({ message: 'Email already registered for this course. Link resent!' });
+    } else {
+      res.status(500).json({ message: 'Error processing your request.' });
+    }
+  }
 });
 
+// Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

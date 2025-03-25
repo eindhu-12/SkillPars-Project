@@ -7,11 +7,15 @@ import Signup from "./Components/Signup";
 import { ToastContainer } from "react-toastify";
 import About from "./Components/About/About";
 import Demo from "./Components/DemoRegistration/Demo";
+import Profile from "./Components/Profile/Profile";
+import Courses from "./Components/Courses/Courses";
+import TeacherForm from "./Components/TeacherRegistration/TeacherForm";
 
 
 function App() {
+  
   return (
-    
+
     <Router>
       <Routes>
       <Route path="/" element={<Home />} />
@@ -22,6 +26,10 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/demo" element={<Demo />}/>
+        <Route path="/profile" element={<Profile/>} />
+        <Route path="/courses" element={<Courses/>} />
+        <Route path="/teacher_registration" element={<TeacherForm/>} />
+
       </Routes>
        <ToastContainer/>
     </Router>

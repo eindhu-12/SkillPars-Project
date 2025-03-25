@@ -4,7 +4,6 @@ import axios from "axios";
 import "./Demo.css";
 
 const Demo = () => {
-  // Extract course name from URL query parameters
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const courseFromURL = queryParams.get("course") || "Not Selected";
@@ -20,25 +19,28 @@ const Demo = () => {
     country: "",
     state: "",
     city: "",
-    course: courseFromURL, // Course from URL
+    course: courseFromURL, 
   });
 
-  // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:5000/register", formData);
-      alert(response.data.message); // Success message
+      alert(response.data.message); 
     } catch (error) {
       console.error("Registration failed:", error);
-      alert("Error registering for the demo.");
+      if (error.response && error.response.status === 400) {
+        alert("Email already registered! Please use a different email.");
+      } else {
+        alert("Error registering for the demo.");
+      }
     }
   };
+  
 
   return (
     <section className="demoContainer">
