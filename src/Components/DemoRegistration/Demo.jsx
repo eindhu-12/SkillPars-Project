@@ -1,26 +1,31 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
-import "./Demo.css";
+// src/Client/Demo.jsx
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import './Demo.css'; // Assuming you have some basic styling
 
 const Demo = () => {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const courseFromURL = queryParams.get("course") || "Not Selected";
 
-  // State for form fields
+  // Extract course from URL query parameter
+  const searchParams = new URLSearchParams(location.search);
+  const courseFromUrl = searchParams.get('course') || '';
+
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    qualification: "",
-    graduationYear: "",
-    phone: "",
-    gender: "",
-    country: "",
-    state: "",
-    city: "",
-    course: courseFromURL, 
+    name: '',
+    email: '',
+    course: courseFromUrl,
+    phone: '',
+    gender: '',
+    qualification: '',
+    city: '',
+    country: '',
   });
+
+  // Update formData if course changes in URL
+  useEffect(() => {
+    setFormData((prev) => ({ ...prev, course: courseFromUrl }));
+  }, [courseFromUrl]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,63 +34,102 @@ const Demo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/register", formData);
-      alert(response.data.message); 
+      const response = await axios.post('http://localhost:5000/api/register', formData);
+
+      // const response = await axios.post('/api/register', formData);
+      alert(response.data.message);
+      window.location.href = '/'; // Redirect to homepage after success
     } catch (error) {
-      console.error("Registration failed:", error);
-      if (error.response && error.response.status === 400) {
-        alert("Email already registered! Please use a different email.");
-      } else {
-        alert("Error registering for the demo.");
-      }
+      console.error('Registration failed:', error);
+      alert('Registration failed. Please try again.');
     }
   };
-  
 
   return (
-    <section className="demoContainer">
-      <h2>Demo Registration</h2>
-      <div className="demoFormContainer">
-        <form onSubmit={handleSubmit}>
+    <div className="demo-container">
+      <h1>Demo Registration</h1>
+      <form onSubmit={handleSubmit} className="demo-form">
+        <div className="form-group">
           <label>Name:</label>
-          <input type="text" name="name" onChange={handleChange} required />
-
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
           <label>Email:</label>
-          <input type="email" name="email" onChange={handleChange} required />
-
-          <label>Highest Qualification:</label>
-          <input type="text" name="qualification" onChange={handleChange} required />
-
-          <label>Year of Graduation:</label>
-          <input type="number" name="graduationYear" onChange={handleChange} required />
-
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
           <label>Course:</label>
-          <input type="text" name="course" value={formData.course} readOnly />
-
-          <label>Phone Number:</label>
-          <input type="tel" name="phone" onChange={handleChange} required />
-
+          <input
+            type="text"
+            name="course"
+            value={formData.course}
+            readOnly // Course is pre-filled and not editable
+          />
+        </div>
+        <div className="form-group">
+          <label>Phone:</label>
+          <input
+            type="text"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
           <label>Gender:</label>
-          <select name="gender" onChange={handleChange} required>
-            <option value="">Select Gender</option>
-            <option value="Female">Female</option>
+          <select name="gender" value={formData.gender} onChange={handleChange} required>
+            <option value="">Select</option>
             <option value="Male">Male</option>
-            <option value="Prefer not to say">Prefer not to say</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
           </select>
-
-          <label>Country:</label>
-          <input type="text" name="country" onChange={handleChange} required />
-
-          <label>State:</label>
-          <input type="text" name="state" onChange={handleChange} required />
-
+        </div>
+        <div className="form-group">
+          <label>Qualification:</label>
+          <input
+            type="text"
+            name="qualification"
+            value={formData.qualification}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
           <label>City:</label>
-          <input type="text" name="city" onChange={handleChange} required />
-
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    </section>
+          <input
+            type="text"
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Country:</label>
+          <input
+            type="text"
+            name="country"
+            value={formData.country}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit" className="submit-btn">Register</button>
+      </form>
+    </div>
   );
 };
 
