@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "axios";
-import "./TeacherForm.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./TeacherForm.css";
 
 const TeacherForm = () => {
+  const navigate = useNavigate(); // Initialize navigate
   const predefinedCode = "2025"; // Hardcoded SkillPars Code
   const [enteredCode, setEnteredCode] = useState("");
   const [isCodeValid, setIsCodeValid] = useState(false);
@@ -42,7 +44,6 @@ const TeacherForm = () => {
     e.preventDefault();
 
     try {
-      // Check if email or phone already exists
       const checkResponse = await axios.post("http://localhost:5000/checkDuplicate", {
         email: formData.email,
         phone: formData.phone,
@@ -53,10 +54,10 @@ const TeacherForm = () => {
         return;
       }
 
-      // Store data in database
       await axios.post("http://localhost:5000/registerTeacher", { ...formData });
 
       toast.success("Teacher Registered Successfully!");
+
       setFormData({
         name: "",
         email: "",
@@ -69,64 +70,74 @@ const TeacherForm = () => {
       });
       setEnteredCode("");
       setIsCodeValid(false);
+
+      // Redirect to home page after success
+      setTimeout(() => {
+        navigate("/");
+      }, 2000); // Wait 2 seconds before redirection
     } catch (error) {
       toast.error("Something went wrong!");
     }
   };
 
   return (
-    <div className="form-container">
-      <h2>Teacher Registration</h2>
+    <>
+      <div className="teacher_registration">
+        <div className="form-container">
+          <h2>Teacher Registration</h2>
 
-      {!isCodeValid ? (
-        <div className="code-verification">
-          <label>SkillPars Code:</label>
-          <input type="text" value={enteredCode} onChange={handleCodeChange} placeholder="Enter SkillPars Code" required />
-          <button className="verify" onClick={verifyCode}>Verify Code</button>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="teacher_Register">
-          <label>Full Name:</label>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+          {!isCodeValid ? (
+            <div className="code-verification">
+              <label>SkillPars Code:</label>
+              <input type="text" value={enteredCode} onChange={handleCodeChange} placeholder="Enter SkillPars Code" required />
+              <button className="verify" onClick={verifyCode}>Verify Code</button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="teacher_Register">
+              <label>Full Name:</label>
+              <input type="text" name="name" value={formData.name} onChange={handleChange} required />
 
-          <label>Email:</label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+              <label>Email:</label>
+              <input type="email" name="email" value={formData.email} onChange={handleChange} required />
 
-          <label>Phone Number:</label>
-          <input type="text" name="phone" value={formData.phone} onChange={handleChange} required />
+              <label>Phone Number:</label>
+              <input type="text" name="phone" value={formData.phone} onChange={handleChange} required />
 
-          <label>Course Name:</label>
-          <input type="text" name="course" value={formData.course} onChange={handleChange} required />
+              <label>Course Name:</label>
+              <input type="text" name="course" value={formData.course} onChange={handleChange} required />
 
-          <label>Are you a Fresher?</label>
-          <select name="fresher" onChange={(e) => setIsFresher(e.target.value === "Yes")}>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+              <label>Are you a Fresher?</label>
+              <select name="fresher" onChange={(e) => setIsFresher(e.target.value === "Yes")}>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
 
-          {!isFresher && (
-            <>
-              <label>Years of Experience:</label>
-              <input type="number" name="experience" value={formData.experience} onChange={handleChange} required />
-            </>
+              {!isFresher && (
+                <>
+                  <label>Years of Experience:</label>
+                  <input type="number" name="experience" value={formData.experience} onChange={handleChange} required />
+                </>
+              )}
+
+              <label>Educational Qualifications:</label>
+              <textarea name="qualifications" value={formData.qualifications} onChange={handleChange} required />
+
+              <label>Skills:</label>
+              <input type="text" name="skills" value={formData.skills} onChange={handleChange} required />
+
+              <label>Interview Completed?</label>
+              <select name="interviewCompleted" value={formData.interviewCompleted} onChange={handleChange}>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+
+              <button type="submit">Register</button>
+            </form>
           )}
+        </div>
 
-          <label>Educational Qualifications:</label>
-          <textarea name="qualifications" value={formData.qualifications} onChange={handleChange} required />
-
-          <label>Skills:</label>
-          <input type="text" name="skills" value={formData.skills} onChange={handleChange} required />
-
-          <label>Interview Completed?</label>
-          <select name="interviewCompleted" value={formData.interviewCompleted} onChange={handleChange}>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
-
-          <button type="submit">Register</button>
-        </form>
-      )}
-    </div>
+      </div>
+    </>
   );
 };
 

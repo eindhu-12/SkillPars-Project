@@ -1,6 +1,6 @@
 // src/Server/server.js
 import express from 'express';
-import mysql from 'mysql2/promise';
+import mysql from 'mysql2/promise'; // Reintroduced for teacher registration
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -10,22 +10,22 @@ dotenv.config();
 
 const app = express();
 
-// Enable CORS with explicit logging
+// Enable CORS for http://localhost:5173
 app.use(cors({
   origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
 }));
 
+// Debug middleware
 app.use((req, res, next) => {
   console.log(`Incoming request: ${req.method} ${req.path}`);
-  res.header('Access-Control-Allow-Origin', 'http://localhost:5173'); // Fallback
   next();
 });
 
 app.use(express.json());
 
-// MySQL Database Connection
+// MySQL Database Connection (for teacher registration)
 const dbConfig = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -36,7 +36,7 @@ const dbConfig = {
 
 const pool = mysql.createPool(dbConfig);
 
-// Email Transporter
+// Email Transporter (for demo registration)
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -45,7 +45,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Course Zoom Links
+// Course Zoom Links (for demo registration)
 const courseLinks = {
   "Python Programming": "https://us05web.zoom.us/j/84431906620?pwd=yuvuIh8uZfUeuX0BYUMmQRx9cHbiab.1",
   "Java Programming": "https://us05web.zoom.us/j/86125029201?pwd=KJPpgxUsrj0IWBylfOsz7O7iO0bn0v.1",
@@ -53,21 +53,12 @@ const courseLinks = {
   "MERN Stack": "https://us05web.zoom.us/j/85142597860?pwd=XzWjJKeekYCtiAbZaokbwLKFhhqZkr.1",
 };
 
-// API Endpoint for Registration
+// Demo Registration Endpoint (Email only)
 app.post('/api/register', async (req, res) => {
   console.log('POST /api/register received:', req.body);
-  const { name, email, course, phone, gender, qualification, city, country } = req.body;
+  const { name, email, course } = req.body;
 
   try {
-    const connection = await pool.getConnection();
-    console.log('Database connection established');
-
-    const [existing] = await connection.query(
-      'SELECT * FROM demo WHERE email = ? AND course = ?',
-      [email, course]
-    );
-    console.log('Existing records:', existing);
-
     const demoTime = '10:00 AM - 11:00 AM';
     const zoomLink = courseLinks[course] || 'No link available';
 
@@ -78,33 +69,73 @@ app.post('/api/register', async (req, res) => {
       text: `Hello ${name},\n\nYou have successfully registered for the ${course} demo session.\n\nDetails:\nDate: Tomorrow\nTime: ${demoTime}\nZoom Link: ${zoomLink}\n\nBest regards,\nSkillPars Team`,
     };
 
-    if (existing.length > 0) {
-      console.log('User already registered, sending email');
-      await transporter.sendMail(mailOptions);
-      connection.release();
-      return res.json({ message: 'You are already registered. Zoom link sent to your email.' });
-    }
-
-    console.log('Inserting new registration');
-    await connection.query(
-      'INSERT INTO demo (name, email, course, phone, gender, qualification, city, country) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [name, email, course, phone, gender, qualification, city, country]
-    );
-
-    console.log('Sending email');
+    console.log('Sending email to:', email);
     await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully');
 
-    connection.release();
     res.json({ message: 'Registration successful! Zoom link sent to your email.' });
   } catch (error) {
-    console.error('Error in registration:', error);
+    console.error('Error sending email:', error);
     res.status(500).json({ message: 'Registration failed. Please try again.' });
   }
 });
 
+// Check Duplicate Teacher Endpoint
+app.post('/checkDuplicate', async (req, res) => {
+  console.log('POST /checkDuplicate received:', req.body);
+  const { email, phone } = req.body;
+
+  try {
+    const connection = await pool.getConnection();
+    const [rows] = await connection.query(
+      'SELECT * FROM teachers WHERE email = ? OR phone = ?',
+      [email, phone]
+    );
+    connection.release();
+
+    res.json({ exists: rows.length > 0 });
+  } catch (error) {
+    console.error('Error checking duplicates:', error);
+    res.status(500).json({ message: 'Error checking duplicates.' });
+  }
+});
+
+// Teacher Registration Endpoint
+// Teacher Registration Endpoint
+app.post('/registerTeacher', async (req, res) => {
+  console.log('POST /registerTeacher received:', req.body);
+  const { name, email, phone, course, experience, qualifications, skills, interviewCompleted } = req.body;
+
+  try {
+    const connection = await pool.getConnection();
+    await connection.query(
+      'INSERT INTO teachers (name, email, phone, course, experience, qualifications, skills, interviewCompleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+      [name, email, phone, course, experience || null, qualifications, skills, interviewCompleted]
+    );
+    connection.release();
+
+    // Send registration confirmation email
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: email,
+      subject: 'SkillPars - Teacher Registration Successful',
+      text: `Dear ${name},\n\nYour registration as a teacher on SkillPars has been successfully completed.\n\nCourse Assigned: ${course}\nContact: ${phone}\n\nWe will notify you about the next steps soon.\n\nBest regards,\nSkillPars Team`
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log('Registration confirmation email sent to:', email);
+
+    res.json({ message: 'Teacher registered successfully! Confirmation email sent.' });
+  } catch (error) {
+    console.error('Error registering teacher:', error);
+    res.status(500).json({ message: 'Registration failed. Please try again.' });
+  }
+});
+
+
 // Handle preflight requests
-app.options('/api/register', cors(), (req, res) => {
-  console.log('OPTIONS /api/register received');
+app.options('*', cors(), (req, res) => {
+  console.log(`OPTIONS request received for ${req.path}`);
   res.sendStatus(200);
 });
 
